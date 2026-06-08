@@ -108,27 +108,108 @@ export function obtenerRolUsu(){
     }
 }
 
+// Comprueba si el token expiró.
+export function isTokenExpired(){
+    const payload = obtenerPayloadToken();
+    if(!payload || !payload.exp) return true;
+    const exp = payload.exp;
+    let expSec;
+    if(typeof exp === 'number'){
+        expSec = exp;
+    } else {
+        // puede venir como string ISO
+        expSec = Math.floor(new Date(exp).getTime()/1000);
+    }
+    return Math.floor(Date.now()/1000) >= expSec;
+}
+
+// Mensajes globales sencillos (Bootstrap alert temporal)
+export function showMessage(message, type='danger', timeout=5000){
+    try{
+        const existing = document.getElementById('globalAlert');
+        if(existing) existing.remove();
+        const div = document.createElement('div');
+        div.id = 'globalAlert';
+        div.className = `alert alert-${type} fixed-top m-3`;
+        div.role = 'alert';
+        div.textContent = message;
+        document.body.appendChild(div);
+        setTimeout(()=>{ div.remove(); }, timeout);
+    }catch(e){ console.log('showMessage error', e); }
+}
+
+// Wrapper seguro para fetch con Authorization y manejo centralizado de 401/errores.
+export async function fetchWithAuth(path, options = {}){
+    if(isTokenExpired()){
+        logout();
+        window.location.href = 'index.html';
+        throw new Error('Token expirado');
+    }
+    const url = path.startsWith('http') ? path : `${API_URL}${path}`;
+    options.headers = options.headers || {};
+    // No sobrescribir Content-Type si el caller lo estableció
+    options.headers['Authorization'] = `Bearer ${obtenerToken()}`;
+    try{
+        const resp = await fetch(url, options);
+        if(resp.status === 401){
+            // token inválido o expirado
+            logout();
+            window.location.href = 'index.html';
+            return resp;
+        }
+        return resp;
+    }catch(err){
+        throw new Error('No se pudo conectar con el servidor');
+    }
+}
+
 // INVENTARIO
 
 export async function obtenerInventario(){
-    return await fetch(`${API_URL}/inventario/`,
-        {
-            /* Agrega el token del usuario a la petición para que el backend sepa
-            quién está realizando sea petición */
-            headers: {
-                Authorization: `Bearer ${obtenerToken()}`
-            }
-        }
-    );
+    return await fetchWithAuth('/inventario/', { method: 'GET' });
 }
 
 export async function eliminarEquipo(idEquipo) {
-    return await fetch(`${API_URL}/inventario/equipos/${idEquipo}`,
-        {
-            method: "DELETE",
-            headers: {
-                Authorization: `Bearer ${obtenerToken()}`
-            }
-        }
-    );
+    return await fetchWithAuth(`/inventario/equipos/${idEquipo}`, { method: 'DELETE' });
+}
+
+// ----- Helpers adicionales para frontend (obtener/crear/editar recursos) -----
+export async function obtenerUbicaciones(){
+    return await fetchWithAuth('/inventario/ubicaciones', { method: 'GET' });
+}
+
+export async function obtenerEquipo(id){
+    return await fetchWithAuth(`/inventario/${id}`, { method: 'GET' });
+}
+
+export async function crearEquipo(data){
+    return await fetchWithAuth('/inventario/equipos', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+    });
+}
+
+export async function actualizarEquipo(id, data){
+    return await fetchWithAuth(`/inventario/equipos/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+    });
+}
+
+export async function crearComponentes(data){
+    return await fetchWithAuth('/inventario/componentes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+    });
+}
+
+export async function actualizarComponentes(id, data){
+    return await fetchWithAuth(`/inventario/componentes/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+    });
 }
