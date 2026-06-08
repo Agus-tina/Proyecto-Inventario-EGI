@@ -56,6 +56,11 @@ async function cargarDetalle(id){
         const equipo = data.equipo;
         const comp = data.componentes;
 
+        // Actualizar el título del breadcrumb con el id real
+        const breadcrumb = document.getElementById('breadcrumbDetalle');
+        if(breadcrumb)
+            { breadcrumb.textContent = `Detalle máquina #${equipo.id_equipo}`; }
+
         // SQL data
         detUbicacion.textContent = equipo.ubicacion.nombre;
         detTipoUbicacion.textContent = equipo.ubicacion.tipo;
