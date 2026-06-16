@@ -9,13 +9,13 @@
 //  de NumberInt(8)) el validador los rechazaria por bsonType "int".
 // =====================================================================
 
-db = db.getSiblingDB('inventario_db');
-db.componentes.drop();
+db = db.getSiblingDB('inventario_componentes');
+db.computadoras.drop();
 
 // ---------------------------------------------------------------------
 //  Coleccion 'componentes' con validador $jsonSchema
 // ---------------------------------------------------------------------
-db.createCollection('componentes', {
+db.createCollection('computadoras', {
   validator: {
     $jsonSchema: {
       bsonType: 'object',
@@ -152,14 +152,14 @@ db.createCollection('componentes', {
 // ---------------------------------------------------------------------
 //  Indices
 // ---------------------------------------------------------------------
-db.componentes.createIndex({ id_equipo: 1 }, { unique: true }); // clave puente unica
-db.componentes.createIndex({ 'sistema_operativo.nombre': 1 });  // idx del diagrama
+db.computadoras.createIndex({ id_equipo: 1 }, { unique: true }); // clave puente unica
+db.computadoras.createIndex({ 'sistema_operativo.nombre': 1 });  // idx del diagrama
 
 // ---------------------------------------------------------------------
 //  DATOS DE PRUEBA (12 documentos; id_equipo 1..12 = equipos de MySQL)
 //  desktop: 1,2,4,5,7,9,11   |   laptop: 3,6,8,10,12
 // ---------------------------------------------------------------------
-db.componentes.insertMany([
+db.computadoras.insertMany([
   {
     id_equipo: NumberInt(1), tipo: 'desktop', codigo_inventario: 'INV-DSK-0001',
     fabricante: 'Dell', modelo: 'OptiPlex 7090', observacion: 'Lab de software',
