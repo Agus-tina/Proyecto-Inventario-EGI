@@ -7,20 +7,20 @@
 --  Los 'GO' son separadores de lote (no son SQL, los interpreta la herramienta).
 -- =====================================================================
 
--- Nos paramos en master para poder dropear ubicacion_db aunque la ventana
+-- Nos paramos en master para poder dropear inventario_ubicaciones aunque la ventana
 -- estuviera conectada a ella. Sin esto, el DROP falla con "currently in use".
 USE master;
 GO
 
-IF DB_ID('ubicacion_db') IS NOT NULL
+IF DB_ID('inventario_ubicaciones') IS NOT NULL
 BEGIN
-    ALTER DATABASE ubicacion_db SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
-    DROP DATABASE ubicacion_db;
+    ALTER DATABASE inventario_ubicaciones SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+    DROP DATABASE inventario_ubicaciones;
 END
 GO
-CREATE DATABASE ubicacion_db;
+CREATE DATABASE inventario_ubicaciones;
 GO
-USE ubicacion_db;
+USE inventario_ubicaciones;
 GO
 
 -- =====================================================================
@@ -205,7 +205,7 @@ GO
 --  FIN
 -- =====================================================================
 
-USE ubicacion_db;
+USE inventario_ubicaciones;
 SELECT name FROM sys.tables ORDER BY name;
 SELECT COUNT(*) FROM Persona;
 
