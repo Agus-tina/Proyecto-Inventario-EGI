@@ -1,7 +1,5 @@
 // Url del backend
-const API_URL = "http://localhost:8000";
-
-// Se exportan estas funciones para que pueda utilizarla app.js
+const API_URL = "/api";
 
 // LOGIN
 
