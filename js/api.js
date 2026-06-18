@@ -211,3 +211,7 @@ export async function actualizarComponentes(id, data){
         body: JSON.stringify(data)
     });
 }
+
+export async function obtenerPersonas() {
+    return await fetchWithAuth('/inventario/personas', { method: 'GET' });
+}

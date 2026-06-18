@@ -196,11 +196,23 @@ function dibujarTabla(inventario){
     inventario.forEach(item => {
         const fila = document.createElement("tr");
 
+        const estadoBadge = {
+            'OPERATIVO':     '<span class="badge bg-success">Operativo</span>',
+            'EN_REPARACION': '<span class="badge bg-warning text-dark">En reparación</span>',
+            'BAJA':          '<span class="badge bg-danger">Baja</span>',
+        };
+        const badge = estadoBadge[item.equipo.estado] ?? `<span class="badge bg-secondary">${item.equipo.estado ?? '-'}</span>`;
+
+        const eliminarCell = (rol === 'Tecnicos')
+            ? `<button class="btn btn-danger btn-sm" onclick="eliminarEquipoTabla(${item.equipo.id_equipo})">Eliminar</button>`
+            : '-';
+
         fila.innerHTML = `
             <td>${item.equipo.id_equipo}</td>
             <td>${item.equipo.ubicacion.nombre}</td>
-            <td>${item.equipo.mesa}</td>
+            <td>${item.equipo.mesa ?? '-'}</td>
             <td>${item.componentes?.tipo ?? "-"}</td>
+            <td class="text-center">${badge}</td>
             <td>
                 <a
                     href="detalle.html?id=${item.equipo.id_equipo}"
@@ -209,9 +221,7 @@ function dibujarTabla(inventario){
                 </a>
             </td>
             <td>
-                <button class="btn btn-danger btn-sm" 
-                onclick="eliminarEquipoTabla(${item.equipo.id_equipo})">
-                Eliminar </button>
+                ${eliminarCell}
             </td>
         `;
 

@@ -6,6 +6,7 @@ const detUbicacion = document.getElementById('detUbicacion');
 const detTipoUbicacion = document.getElementById('detTipoUbicacion');
 const detEdificio = document.getElementById('detEdificio');
 const detPiso = document.getElementById('detPiso');
+const detMesa = document.getElementById('detMesa');
 const detResponsable = document.getElementById('detResponsable');
 const detMantenimiento = document.getElementById('detMantenimiento');
 const detEstado = document.getElementById('detEstado');
@@ -66,6 +67,8 @@ async function cargarDetalle(id){
         detTipoUbicacion.textContent = equipo.ubicacion.tipo;
         detEdificio.textContent = equipo.ubicacion.edificio ?? '-';
         detPiso.textContent = equipo.ubicacion.piso ?? '-';
+        // Mostrar mesa (si es null mostrar guion)
+        if(detMesa) detMesa.textContent = equipo.mesa ?? '-';
         detResponsable.textContent = equipo.asignaciones[0]?.persona?.nombre ?? '-';
         detMantenimiento.textContent = equipo.mantenimientos[0]?.fecha ?? '-';
         detEstado.textContent = equipo.estado ?? '-';
@@ -129,7 +132,9 @@ async function cargarDetalle(id){
         } else if(comp?.tipo === 'laptop'){
             seccionLaptop.classList.remove('d-none');
             seccionDesktop.classList.add('d-none');
-            document.getElementById('detBatEstado').textContent = comp.bateria?.estado ?? '-';
+            // Mostrar capacidad en mAh si existe, y ciclos
+            document.getElementById('detBatEstado').textContent =
+                comp.bateria?.capacidad_mah ? `${comp.bateria.capacidad_mah} mAh` : '-';
             document.getElementById('detBatCiclos').textContent = comp.bateria?.ciclos ?? '-';
             document.getElementById('detPantPulgadas').textContent = comp.pantalla_integrada?.pulgadas ?? '-';
             document.getElementById('detPantRes').textContent = comp.pantalla_integrada?.resolucion ?? '-';
@@ -177,6 +182,12 @@ btnConfirmarEliminar?.addEventListener('click', async () =>{
 // Inicializar
 (async function init(){
     const id = getQueryId();
+    // Listener para cerrar sesión desde esta página
+    document.getElementById('btnCerrarSesion')?.addEventListener('click', (e) => {
+        e?.preventDefault();
+        logout();
+        window.location.href = 'index.html';
+    });
     if(!id){ window.location.href = 'listado.html'; return; }
     await cargarDetalle(id);
 })();

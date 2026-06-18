@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página Detalle</title>
+    <title>Inventario ITU — Detalle</title>
     <link rel="stylesheet" href="css/style.css">
     <!-- Link Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" 
@@ -32,7 +32,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="btn btn-outline-light fw-semibold cerrar-sesion">
+                        <a id="btnCerrarSesion" class="btn btn-outline-light fw-semibold cerrar-sesion">
                             <img src="img/iconCerrarSesion.png" alt="Cerrar sesión" width="22" height="22" class="me-1">
                             Cerrar Sesión
                         </a>
@@ -48,7 +48,7 @@
         <!-- BREADCRUMB -->
         <nav aria-label="breadcrumb" class="mb-4">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="index.html" class="text-info p-2">Inicio</a>
+                <li class="breadcrumb-item"><a href="listado.html" class="text-info p-2">Listado</a>
                 <li class="breadcrumb-item"><a href="listado.html" class="text-info">Listado Máquinas</a>
                 <li class="breadcrumb-item active text-white" id="breadcrumbDetalle">
                     Detalle máquina #101</li>
@@ -75,6 +75,10 @@
                 <div class="col-6">
                     <p class="text-muted small mb-0">Piso</p>
                     <p class="fw-bold" id="detPiso">—</p>
+                </div>
+                <div class="col-6">
+                    <p class="text-muted small mb-0">Mesa</p>
+                    <p class="fw-bold" id="detMesa">—</p>
                 </div>
                 <div class="col-6">
                     <p class="text-muted small mb-0">Responsable asignado</p>
@@ -196,7 +200,7 @@
                 <p class="text-muted small mb-4">Batería</p>
                 <div class="row g-3">
                     <div class="col-md-6">
-                        <p class="text-muted small mb-0">Estado</p>
+                        <p class="text-muted small mb-0">Capacidad</p>
                         <p class="fw-bold" id="detBatEstado">—</p>
                     </div>
                     <div class="col-md-6">
