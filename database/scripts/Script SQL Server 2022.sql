@@ -32,6 +32,7 @@ GO
 CREATE TABLE Ubicacion (
     id_ubicacion INT IDENTITY(1,1) PRIMARY KEY,
     nombre       NVARCHAR(100) NOT NULL,
+    mesa         VARCHAR(10),
     tipo         VARCHAR(20)   NOT NULL
         CONSTRAINT chk_ubicacion_tipo CHECK (tipo IN ('AULA','LABORATORIO','BIBLIOTECA','OFICINA')),
     edificio     NVARCHAR(100) NOT NULL,
@@ -119,18 +120,18 @@ GO
 -- =====================================================================
 
 -- ---------- Ubicacion (11) ----------
-INSERT INTO Ubicacion (nombre, tipo, edificio, piso) VALUES
-  (N'Aula 101',                'AULA',        N'Edificio A',  1),
-  (N'Aula 102',                'AULA',        N'Edificio A',  1),
-  (N'Laboratorio de Redes',    'LABORATORIO', N'Edificio B',  2),
-  (N'Laboratorio de Software', 'LABORATORIO', N'Edificio B',  2),
-  (N'Biblioteca Central',      'BIBLIOTECA',  N'Edificio C',  0),
-  (N'Oficina de Sistemas',     'OFICINA',     N'Edificio A',  3),
-  (N'Aula 201',                'AULA',        N'Edificio A',  2),
-  (N'Laboratorio de Hardware', 'LABORATORIO', N'Edificio B',  1),
-  (N'Oficina de Direccion',    'OFICINA',     N'Edificio C',  3),
+INSERT INTO Ubicacion (nombre, mesa, tipo, edificio, piso) VALUES
+  (N'Aula 101', 'A-100',                'AULA',        N'Edificio A',  1),
+  (N'Aula 102', 'A-101',                'AULA',        N'Edificio A',  1),
+  (N'Laboratorio de Redes', 'B-112',    'LABORATORIO', N'Edificio B',  2),
+  (N'Laboratorio de Software', 'B-115', 'LABORATORIO', N'Edificio B',  2),
+  (N'Biblioteca Central', 'C-117',     'BIBLIOTECA',  N'Edificio C',  0),
+  (N'Oficina de Sistemas', 'C-123',    'OFICINA',     N'Edificio A',  3),
+  (N'Aula 201',      'C-170',          'AULA',        N'Edificio A',  2),
+  (N'Laboratorio de Hardware', 'D-111', 'LABORATORIO', N'Edificio B',  1),
+  (N'Oficina de Direccion',  'E-124',  'OFICINA',     N'Edificio C',  3), 'F-140',
   (N'Aula Magna',              'AULA',        N'Edificio D',  0),
-  (N'Sala de Servidores',      'OFICINA',     N'Edificio B', -1);
+  (N'Sala de Servidores',  'J-100',    'OFICINA',     N'Edificio B', -1);
 GO
 
 -- ---------- Persona (12) ----------
