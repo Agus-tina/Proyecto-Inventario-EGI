@@ -9,6 +9,9 @@ const nombreUsuario = document.getElementById("nomUsu");
 const selectUbicacion = document.getElementById("fUbicacion");
 const btnGuardar = document.getElementById("btnGuardar");
 
+// Campo mesa
+const fMesa = document.getElementById("fMesa");
+
 // Campos principales
 const fTipo = document.getElementById("fTipo");
 const fCodigo = document.getElementById("fCodigo");
@@ -124,6 +127,8 @@ async function cargarParaEditar(id){
         window._editingId = equipo.id_equipo;
         // Ubicacion
         if(selectUbicacion) selectUbicacion.value = equipo.ubicacion.id_ubicacion;
+        // Mesa
+        if(fMesa) fMesa.value = equipo.mesa ?? '';
         // Tipo y hardware
         fTipo.value = comp?.tipo ?? '';
         cambiarTipo(fTipo.value);
@@ -265,7 +270,7 @@ async function guardarFormulario(){
             // Actualizar equipo
             const equipoPayload = {
                 id_ubicacion: parseInt(ubicacion),
-                mesa: null,
+                mesa: (fMesa && fMesa.value) ? fMesa.value : null,
                 estado: fEstado.value || undefined,
                 fecha_alta: fFechaAlta.value || undefined,
             };
@@ -296,7 +301,7 @@ async function guardarFormulario(){
         const equipoPayload = {
             id_equipo: nuevoId,
             id_ubicacion: parseInt(ubicacion),
-            mesa: null,
+            mesa: (fMesa && fMesa.value) ? fMesa.value : null,
             estado: fEstado.value || 'operativo',
             fecha_alta: fFechaAlta.value || undefined,
         };
