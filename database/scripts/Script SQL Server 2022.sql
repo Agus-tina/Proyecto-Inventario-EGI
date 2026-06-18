@@ -32,7 +32,6 @@ GO
 CREATE TABLE Ubicacion (
     id_ubicacion INT IDENTITY(1,1) PRIMARY KEY,
     nombre       NVARCHAR(100) NOT NULL,
-    mesa         VARCHAR(10),
     tipo         VARCHAR(20)   NOT NULL
         CONSTRAINT chk_ubicacion_tipo CHECK (tipo IN ('AULA','LABORATORIO','BIBLIOTECA','OFICINA')),
     edificio     NVARCHAR(100) NOT NULL,
@@ -57,6 +56,7 @@ GO
 CREATE TABLE Equipo (
     id_equipo    INT IDENTITY(1,1) PRIMARY KEY,
     id_ubicacion INT NOT NULL,
+    mesa         VARCHAR(10),
     estado       VARCHAR(40) NOT NULL,   -- ej: OPERATIVO, EN_REPARACION, BAJA
     fecha_alta   DATE NOT NULL,
     CONSTRAINT fk_equipo_ubicacion FOREIGN KEY (id_ubicacion)
@@ -120,18 +120,18 @@ GO
 -- =====================================================================
 
 -- ---------- Ubicacion (11) ----------
-INSERT INTO Ubicacion (nombre, mesa, tipo, edificio, piso) VALUES
-  (N'Aula 101', 'A-100',                'AULA',        N'Edificio A',  1),
-  (N'Aula 102', 'A-101',                'AULA',        N'Edificio A',  1),
-  (N'Laboratorio de Redes', 'B-112',    'LABORATORIO', N'Edificio B',  2),
-  (N'Laboratorio de Software', 'B-115', 'LABORATORIO', N'Edificio B',  2),
-  (N'Biblioteca Central', 'C-117',     'BIBLIOTECA',  N'Edificio C',  0),
-  (N'Oficina de Sistemas', 'C-123',    'OFICINA',     N'Edificio A',  3),
-  (N'Aula 201',      'C-170',          'AULA',        N'Edificio A',  2),
-  (N'Laboratorio de Hardware', 'D-111', 'LABORATORIO', N'Edificio B',  1),
-  (N'Oficina de Direccion',  'E-124',  'OFICINA',     N'Edificio C',  3), 'F-140',
+INSERT INTO Ubicacion (nombre, tipo, edificio, piso) VALUES
+  (N'Aula 101',                'AULA',        N'Edificio A',  1),
+  (N'Aula 102',                'AULA',        N'Edificio A',  1),
+  (N'Laboratorio de Redes',    'LABORATORIO', N'Edificio B',  2),
+  (N'Laboratorio de Software', 'LABORATORIO', N'Edificio B',  2),
+  (N'Biblioteca Central',     'BIBLIOTECA',  N'Edificio C',  0),
+  (N'Oficina de Sistemas',    'OFICINA',     N'Edificio A',  3),
+  (N'Aula 201',                'AULA',        N'Edificio A',  2),
+  (N'Laboratorio de Hardware',  'LABORATORIO', N'Edificio B',  1),
+  (N'Oficina de Direccion',    'OFICINA',     N'Edificio C',  3),
   (N'Aula Magna',              'AULA',        N'Edificio D',  0),
-  (N'Sala de Servidores',  'J-100',    'OFICINA',     N'Edificio B', -1);
+  (N'Sala de Servidores',      'OFICINA',     N'Edificio B', -1);
 GO
 
 -- ---------- Persona (12) ----------
@@ -152,18 +152,18 @@ GO
 
 -- ---------- Equipo (12) ----------
 -- id_equipo 1..12: clave puente hacia MongoDB.
-INSERT INTO Equipo (id_ubicacion, estado, fecha_alta) VALUES
-  ( 4, 'OPERATIVO',     '2023-03-15'),  -- 1  desktop
-  ( 4, 'OPERATIVO',     '2023-03-15'),  -- 2  desktop
-  ( 3, 'OPERATIVO',     '2023-04-01'),  -- 3  laptop
-  ( 1, 'OPERATIVO',     '2023-05-10'),  -- 4  desktop
-  ( 8, 'EN_REPARACION', '2022-08-20'),  -- 5  desktop
-  ( 6, 'OPERATIVO',     '2024-01-12'),  -- 6  laptop
-  ( 5, 'OPERATIVO',     '2023-09-05'),  -- 7  desktop
-  ( 3, 'OPERATIVO',     '2024-02-28'),  -- 8  laptop
-  ( 7, 'OPERATIVO',     '2023-11-11'),  -- 9  desktop
-  ( 9, 'OPERATIVO',     '2024-03-01'),  -- 10 laptop
-  (11, 'OPERATIVO',     '2022-06-30'),  -- 11 desktop
+INSERT INTO Equipo (id_ubicacion, mesa, estado, fecha_alta) VALUES
+  ( 4, 'A-10', 'OPERATIVO',     '2023-03-15'),  -- 1  desktop
+  ( 4, 'D-11', 'OPERATIVO',     '2023-03-15'),  -- 2  desktop
+  ( 3, 'A-16', 'OPERATIVO',     '2023-04-01'),  -- 3  laptop
+  ( 1, 'B-09', 'OPERATIVO',     '2023-05-10'),  -- 4  desktop
+  ( 8, 'M-16', 'EN_REPARACION', '2022-08-20'),  -- 5  desktop
+  ( 6, 'G-12', 'OPERATIVO',     '2024-01-12'),  -- 6  laptop
+  ( 5, 'A-11', 'OPERATIVO',     '2023-09-05'),  -- 7  desktop
+  ( 3, 'B-13', 'OPERATIVO',     '2024-02-28'),  -- 8  laptop
+  ( 7, 'B-07', 'OPERATIVO',     '2023-11-11'),  -- 9  desktop
+  ( 9, 'C-13', 'OPERATIVO',     '2024-03-01'),  -- 10 laptop
+  (11, 'C-11', 'OPERATIVO',     '2022-06-30'),  -- 11 desktop
   (10, 'BAJA',          '2021-04-18');  -- 12 laptop
 GO
 
